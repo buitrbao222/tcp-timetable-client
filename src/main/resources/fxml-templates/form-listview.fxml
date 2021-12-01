@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<?import java.lang.*?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" maxWidth="1.7976931348623157E308" styleClass="form-group"
+      xmlns="http://javafx.com/javafx/17">
+    <HBox alignment="BOTTOM_LEFT">
+        <VBox alignment="BOTTOM_LEFT" HBox.hgrow="ALWAYS">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="List name"/>
+        </VBox>
+        <HBox fx:id="listActionButtons" spacing="8.0" translateY="-4.0">
+            <Button fx:id="listAddButton" mnemonicParsing="false" text="Thêm">
+                <styleClass>
+                    <String fx:value="primary-button"/>
+                    <String fx:value="action-button"/>
+                </styleClass>
+            </Button>
+            <Button fx:id="listEditButton" mnemonicParsing="false" text="Sửa">
+                <styleClass>
+                    <String fx:value="primary-button"/>
+                    <String fx:value="action-button"/>
+                </styleClass>
+            </Button>
+            <Button fx:id="listDeleteButton" mnemonicParsing="false" text="Xóa">
+                <styleClass>
+                    <String fx:value="danger-button"/>
+                    <String fx:value="action-button"/>
+                </styleClass>
+            </Button>
+        </HBox>
+    </HBox>
+    <ListView fx:id="listView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+              minHeight="-Infinity"
+              prefHeight="200.0"/>
+</VBox>

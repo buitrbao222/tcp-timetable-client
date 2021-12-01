@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<?import java.lang.*?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" maxWidth="1.7976931348623157E308" styleClass="form-group"
+      xmlns="http://javafx.com/javafx/17">
+    <HBox alignment="BOTTOM_LEFT">
+        <VBox alignment="BOTTOM_LEFT" HBox.hgrow="ALWAYS">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Table name"/>
+        </VBox>
+        <HBox fx:id="tableActionButtons" spacing="8.0" translateY="-4.0">
+            <Button fx:id="tableAddButton" mnemonicParsing="false" text="Thêm">
+                <styleClass>
+                    <String fx:value="primary-button"/>
+                    <String fx:value="action-button"/>
+                </styleClass>
+            </Button>
+            <Button fx:id="tableEditButton" mnemonicParsing="false" text="Sửa">
+                <styleClass>
+                    <String fx:value="primary-button"/>
+                    <String fx:value="action-button"/>
+                </styleClass>
+            </Button>
+            <Button fx:id="tableDeleteButton" mnemonicParsing="false" text="Xóa">
+                <styleClass>
+                    <String fx:value="danger-button"/>
+                    <String fx:value="action-button"/>
+                </styleClass>
+            </Button>
+        </HBox>
+    </HBox>
+    <TableView fx:id="tableView" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="224.0">
+        <columns>
+            <TableColumn fx:id="tableColumn1" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0"
+                         prefWidth="211.0" text="Column 1"/>
+            <TableColumn fx:id="tableColumn2" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0"
+                         prefWidth="211.0" text="Column 2"/>
+            <TableColumn fx:id="tableColumn3" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0"
+                         prefWidth="211.0" text="Column 3"/>
+        </columns>
+    </TableView>
+</VBox>

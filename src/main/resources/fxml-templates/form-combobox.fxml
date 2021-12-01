@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" styleClass="form-group" xmlns="http://javafx.com/javafx/17">
+    <children>
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Field name"/>
+        <ComboBox fx:id="comboBox" maxWidth="1.7976931348623157E308" minWidth="150.0"/>
+    </children>
+</VBox>

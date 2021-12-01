@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import java.lang.*?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+      minHeight="-Infinity"
+      minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" spacing="16.0"
+      style="-fx-background-color: white;" stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/17">
+    <padding>
+        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+    </padding>
+    <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="16.0" VBox.vgrow="NEVER">
+        <Button fx:id="addButton" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" prefWidth="63.0"
+                text="Thêm" textOverrun="CLIP">
+            <font>
+                <Font size="14.0"/>
+            </font>
+            <styleClass>
+                <String fx:value="primary-button"/>
+                <String fx:value="action-button"/>
+            </styleClass>
+        </Button>
+        <Button fx:id="editButton" defaultButton="true" mnemonicParsing="false" text="Sửa">
+            <font>
+                <Font size="14.0"/>
+            </font>
+            <HBox.margin>
+                <Insets/>
+            </HBox.margin>
+            <styleClass>
+                <String fx:value="primary-button"/>
+                <String fx:value="action-button"/>
+            </styleClass>
+        </Button>
+        <Button fx:id="deleteButton" mnemonicParsing="false" text="Xóa">
+            <font>
+                <Font size="14.0"/>
+            </font>
+            <HBox.margin>
+                <Insets/>
+            </HBox.margin>
+            <styleClass>
+                <String fx:value="danger-button"/>
+                <String fx:value="action-button"/>
+            </styleClass>
+        </Button>
+    </HBox>
+    <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+        <columns>
+            <TableColumn prefWidth="75.0" text="Column 1"/>
+            <TableColumn prefWidth="75.0" text="Column 2"/>
+            <TableColumn prefWidth="75.0" text="Column 3"/>
+        </columns>
+    </TableView>
+</VBox>
