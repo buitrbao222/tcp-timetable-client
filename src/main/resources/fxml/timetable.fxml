@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="720.0" prefWidth="1360.0"
+            xmlns="http://javafx.com/javafx/17">
+    <children>
+        <HBox prefHeight="720.0" prefWidth="1360.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <GridPane fx:id="gridPane" gridLinesVisible="true" prefHeight="720.0" prefWidth="1238.0"
+                          style="-fx-padding: 4;">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" maxWidth="271.0" minWidth="10.0" prefWidth="200.0"/>
+                        <ColumnConstraints fx:id="monday" halignment="CENTER" hgrow="SOMETIMES" maxWidth="271.0"
+                                           minWidth="10.0" prefWidth="271.0"/>
+                        <ColumnConstraints fx:id="tuesday" halignment="CENTER" hgrow="SOMETIMES" maxWidth="273.0"
+                                           minWidth="10.0" prefWidth="273.0"/>
+                        <ColumnConstraints fx:id="wednesday" halignment="CENTER" hgrow="SOMETIMES" maxWidth="273.0"
+                                           minWidth="10.0" prefWidth="273.0"/>
+                        <ColumnConstraints fx:id="thursday" halignment="CENTER" hgrow="SOMETIMES" maxWidth="273.0"
+                                           minWidth="10.0" prefWidth="273.0"/>
+                        <ColumnConstraints fx:id="friday" halignment="CENTER" hgrow="SOMETIMES" maxWidth="273.0"
+                                           minWidth="10.0" prefWidth="273.0"/>
+                        <ColumnConstraints fx:id="saturday" halignment="CENTER" hgrow="SOMETIMES" maxWidth="273.0"
+                                           minWidth="10.0" prefWidth="273.0"/>
+                        <ColumnConstraints fx:id="sunday" halignment="CENTER" hgrow="SOMETIMES" maxWidth="273.0"
+                                           minWidth="10.0" prefWidth="273.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <children>
+                        <Label text="THỨ HAI" GridPane.columnIndex="1">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                        <Label text="THỨ NĂM" GridPane.columnIndex="4">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                        <Label text="THỨ TƯ" GridPane.columnIndex="3">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                        <Label text="THỨ BA" GridPane.columnIndex="2">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                        <Label text="THỨ SÁU" GridPane.columnIndex="5">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                        <Label text="THỨ BẢY" GridPane.columnIndex="6">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                        <Label text="CHỦ NHẬT" GridPane.columnIndex="7">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                        <Label text="Tiết 1" GridPane.rowIndex="1">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                        <Label text="Tiết 2" GridPane.rowIndex="2">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                        <Label text="Tiết 3" GridPane.rowIndex="3">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                        <Label text="Tiết 4" GridPane.rowIndex="4">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                        <Label text="Tiết 5" GridPane.rowIndex="5">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                        <Label text="Tiết 6" GridPane.rowIndex="6">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                        <Label text="Tiết 7" GridPane.rowIndex="7">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                        <Label text="Tiết 8" GridPane.rowIndex="8">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                        <Label text="Tiết 9" GridPane.rowIndex="9">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                        <Label text="Tiết 10" GridPane.rowIndex="10">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                        <Label text="Tiết 11" GridPane.rowIndex="11">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                        <Label text="Tiết 12" GridPane.rowIndex="12">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                        <Label text="Tiết 13" GridPane.rowIndex="13">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                        <Label text="Tiết 14" GridPane.rowIndex="14">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </Label>
+                    </children>
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                </GridPane>
+                <TableView fx:id="table" prefHeight="720.0" prefWidth="157.0" style="-fx-padding: 4;">
+                    <columns>
+                        <TableColumn fx:id="timeTableColumn" prefWidth="355.0" text="Danh sách TKB"/>
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                    </columnResizePolicy>
+                </TableView>
+            </children>
+        </HBox>
+    </children>
+</AnchorPane>

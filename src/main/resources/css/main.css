@@ -6,3 +6,7 @@
 .form-group {
     -fx-spacing: 8;
 }
+
+.disable{
+    -fx-opacity: 1;
+}

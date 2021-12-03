@@ -1,14 +1,20 @@
 package Controllers;
 
+import DTO.TimeTable;
+import Utils.AlertUtils;
+import Utils.Api;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
-import Utils.AlertUtils;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -109,7 +115,7 @@ public class MainController implements Initializable {
         subjects.remove(index);
     }
 
-    public void onCreateClick() {
+    public void onCreateClick() throws IOException {
         if (subjects.size() == 0) {
             AlertUtils.alert("Hãy thêm ít nhất 1 mã môn học");
             return;
@@ -167,9 +173,18 @@ public class MainController implements Initializable {
             params += "&daysOn=" + String.join(",", studyDays);
         }
 
-        System.out.println("--- Parameters:");
-        System.out.println(params);
-        System.out.println();
+        ArrayList<TimeTable> timeTables = Api.getTimeTables(params);
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/timetable.fxml"));
+        TimeTableController timeTableController = new TimeTableController();
+        timeTableController.timeTableList = timeTables;
+        fxmlLoader.setController(timeTableController);
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+        stage.setTitle("Thời khóa biểu SGU");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
     }
 
     public void initAddTextField() {
