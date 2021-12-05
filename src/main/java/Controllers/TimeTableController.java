@@ -1,9 +1,6 @@
 package Controllers;
 
-import DTO.ClassSession;
-import DTO.Subject;
-import DTO.SubjectClass;
-import DTO.TimeTable;
+import DTO.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,13 +20,14 @@ import java.util.ResourceBundle;
 public class TimeTableController implements Initializable {
     public ArrayList<TimeTable> timeTableList;
     @FXML
-    public TableView<TimeTable> table;
+    public TableView<TimeTableColumn> table;
     @FXML
-    public TableColumn<TimeTable, String> timeTableColumn;
+    public TableColumn<TimeTableColumn, String> timeTableColumn;
     @FXML
     public GridPane gridPane;
+
     ObservableList<Subject> subjects = FXCollections.observableArrayList();
-    ObservableList<TimeTable> timeTables = FXCollections.observableArrayList();
+    ObservableList<TimeTableColumn> timeTables = FXCollections.observableArrayList();
 
     public void initGridPaneView() {
         gridPane.getChildren().removeIf(node -> node instanceof TextFlow);
@@ -55,35 +53,34 @@ public class TimeTableController implements Initializable {
 
     public void initTableView() {
         table.setRowFactory(tv -> {
-            TableRow<TimeTable> row = new TableRow<>();
-
-            row.setOnMouseClicked(event -> {
-                if (!row.isEmpty()) {
-                    subjects.clear();
-                    subjects.addAll(timeTables.get(row.getIndex()).subjects);
-                    initGridPaneView();
-                }
-            });
+            TableRow<TimeTableColumn> row = new TableRow<>();
 
             timeTableColumn.setCellValueFactory(data -> {
                 SimpleStringProperty property = new SimpleStringProperty();
-                property.setValue("Thời khóa biểu " + (row.getIndex() + 1));
+                property.setValue("Thời khóa biểu " + data.getValue().index);
                 return property;
             });
 
             return row;
         });
 
-        timeTables.addAll(timeTableList);
+        int size = timeTableList.size();
+        for (int i = 1; i <= size; i++) {
+            TimeTableColumn timeTableColumn = new TimeTableColumn();
+            timeTableColumn.index = i;
+            timeTableColumn.timeTable = timeTableList.get(i - 1);
+            timeTables.add(timeTableColumn);
+        }
+
         table.setItems(timeTables);
 
-        // Set timetable default
-        if (!timeTableList.isEmpty()) {
-            table.getSelectionModel().selectFirst();
+        table.getSelectionModel().selectedItemProperty().addListener((observableValue, timeTable, t1) -> {
             subjects.clear();
-            subjects.addAll(timeTables.get(table.getSelectionModel().getSelectedIndex()).subjects);
+            subjects.addAll(timeTables.get(table.getSelectionModel().getSelectedIndex()).timeTable.subjects);
             initGridPaneView();
-        }
+        });
+
+        table.getSelectionModel().selectFirst();
     }
 
     @Override
