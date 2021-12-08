@@ -1,8 +1,8 @@
 package Controllers;
 
 import DTO.TimeTable;
+import Socket.Connection;
 import Utils.AlertUtils;
-import Utils.Api;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
@@ -116,48 +117,47 @@ public class MainController implements Initializable {
     }
 
     public void onCreateClick() throws IOException {
+        JSONObject options = new JSONObject();
+
         if (subjects.size() == 0) {
             AlertUtils.alert("Hãy thêm ít nhất 1 mã môn học");
             return;
         }
 
-        String params = "";
-
         String subjects = String.join(",", subjectsListView.getItems());
-        params += "?subjects=" + subjects;
+        options.put("subjects", subjects);
 
         if (subjectLimitCheckBox.isSelected()) {
             String subjectLimit = subjectLimitTextField.getText();
-            params += "&numSubjects=" + subjectLimit;
+            options.put("numSubjects", subjectLimit);
         }
 
         if (resultLimitCheckBox.isSelected()) {
             String resultLimit = resultLimitTextField.getText();
-            params += "&limit=" + resultLimit;
+            options.put("limit", resultLimit);
         }
 
         if (dayCountCheckBox.isSelected()) {
             String dayCount = dayCountTextField.getText();
-            params += "&numDaysOn=" + dayCount;
+            options.put("numDaysOn", dayCount);
         }
 
         if (daySessionCheckBox.isSelected()) {
             RadioButton selectedDaySession = (RadioButton) daySessionToggleGroup.getSelectedToggle();
-            String value = "";
 
             switch (selectedDaySession.getText()) {
                 case MORNING_ONLY:
-                    value = "&morning=true";
+                    options.put("morning", true);
                     break;
                 case AFTERNOON_ONLY:
-                    value = "&afternoon=true";
+                    options.put("afternoon", true);
                     break;
                 case MORNING_AND_AFTERNOON:
-                    value = "&morning=true&afternoon=true";
+                    options.put("morning", true);
+                    options.put("afternoon", true);
                     break;
             }
 
-            params += value;
         }
 
         if (weekDaysCheckBox.isSelected()) {
@@ -170,10 +170,23 @@ public class MainController implements Initializable {
                 String day = checkBox.getText().replace("Thứ ", "");
                 studyDays.add(day);
             }
-            params += "&daysOn=" + String.join(",", studyDays);
+            String daysOn = String.join(",", studyDays);
+            options.put("daysOn", daysOn);
         }
 
-        ArrayList<TimeTable> timeTables = Api.getTimeTables(params);
+        /* Example
+        options.put("subjects", "841052,841065,841068,841113,841121,841307");
+        options.put("morning", "true");
+        options.put("afternoon", "true");
+        options.put("numDaysOn", "4");
+        options.put("minNumDaysOn", "true");
+         */
+
+        System.out.println(options);
+
+        Connection connection = new Connection("localhost", 6000);
+        ArrayList<TimeTable> timeTables = connection.getTimeTables(options);
+        connection.close();
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/timetable.fxml"));
         TimeTableController timeTableController = new TimeTableController();
