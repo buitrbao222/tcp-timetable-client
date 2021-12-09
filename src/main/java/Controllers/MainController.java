@@ -184,7 +184,7 @@ public class MainController implements Initializable {
 
         System.out.println(options);
 
-        Connection connection = new Connection("localhost", 6000);
+        Connection connection = new Connection("103.6.169.208", 6000);
         ArrayList<TimeTable> timeTables = connection.getTimeTables(options);
         connection.close();
 
