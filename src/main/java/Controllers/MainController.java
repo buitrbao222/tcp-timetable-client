@@ -174,14 +174,6 @@ public class MainController implements Initializable {
             options.put("daysOn", daysOn);
         }
 
-        /* Example
-        options.put("subjects", "841052,841065,841068,841113,841121,841307");
-        options.put("morning", "true");
-        options.put("afternoon", "true");
-        options.put("numDaysOn", "4");
-        options.put("minNumDaysOn", "true");
-         */
-
         System.out.println(options);
 
         Connection connection = new Connection("103.6.169.208", 6000);
