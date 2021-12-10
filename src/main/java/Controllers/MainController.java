@@ -39,6 +39,7 @@ public class MainController implements Initializable {
     @FXML
     public CheckBox subjectLimitCheckBox,
             resultLimitCheckBox,
+            minDaysCheckBox,
             dayCountCheckBox,
             daySessionCheckBox,
             weekDaysCheckBox, weekDay2, weekDay3, weekDay4, weekDay5, weekDay6, weekDay7;
@@ -135,6 +136,10 @@ public class MainController implements Initializable {
         if (resultLimitCheckBox.isSelected()) {
             String resultLimit = resultLimitTextField.getText();
             options.put("limit", resultLimit);
+        }
+
+        if (minDaysCheckBox.isSelected()) {
+            options.put("minNumDaysOn", true);
         }
 
         if (dayCountCheckBox.isSelected()) {

@@ -19,14 +19,10 @@ import java.util.ArrayList;
 
 public class Connection {
 
-    private Socket socket;
-    private IOStream io;
-    private String host;
-    private int port;
+    private final Socket socket;
+    private final IOStream io;
 
     public Connection(String host, int port) throws IOException {
-        this.host = host;
-        this.port = port;
         this.socket = new Socket(host, port);
         this.io = new IOStream(this.socket);
     }
@@ -86,10 +82,8 @@ public class Connection {
     }
 
     public void close() throws IOException {
-        if (this.io != null)
-            this.io.close();
-        if (this.socket != null)
-            this.socket.close();
+        this.io.close();
+        this.socket.close();
     }
 
 }
