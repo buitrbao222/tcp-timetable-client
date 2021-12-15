@@ -16,7 +16,6 @@ import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.net.Socket;
 import java.security.PublicKey;
-import java.util.ArrayList;
 
 public class Connection {
 
@@ -29,8 +28,6 @@ public class Connection {
     }
 
     public String getTimetables(JSONObject options) {
-        ArrayList<Timetable> timetables = new ArrayList<>();
-
         try {
             // Receive public key
             String publicKeyJson = receive();
@@ -45,7 +42,9 @@ public class Connection {
             send(secretKeyJson);
 
             String message = receive();
+
             System.out.println(message);
+
             if (message.equalsIgnoreCase("Exchanging session key successful")) {
                 // Send request with options
                 send(options.toString(), secretKey);
@@ -62,6 +61,7 @@ public class Connection {
             e.printStackTrace();
         }
 
+        // Returns "error" if failed
         return "error";
     }
 
