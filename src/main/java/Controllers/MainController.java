@@ -3,6 +3,7 @@ package Controllers;
 import DTO.TimeTable;
 import Socket.Connection;
 import Utils.AlertUtils;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -129,13 +130,36 @@ public class MainController implements Initializable {
         options.put("subjects", subjects);
 
         if (subjectLimitCheckBox.isSelected()) {
-            String subjectLimit = subjectLimitTextField.getText();
-            options.put("numSubjects", subjectLimit);
+            String subjectLimitString = subjectLimitTextField.getText();
+            if (subjectLimitString.isEmpty()) {
+                AlertUtils.alert("Hãy nhập giá trị cho 'Giới hạn số lượng môn học' hoặc bỏ check tùy chọn này.");
+                return;
+            }
+
+            int subjectLimit = Integer.parseInt(subjectLimitString);
+            int subjectLength = subjectsListView.getItems().size();
+
+            if (subjectLimit < 1 || subjectLimit > subjectLength) {
+                AlertUtils.alert("'Giới hạn số lượng môn học' phải có giá trị trong khoảng 1 đến " + subjectLength);
+                return;
+            }
+
+            options.put("numSubjects", subjectLimitString);
         }
 
         if (resultLimitCheckBox.isSelected()) {
-            String resultLimit = resultLimitTextField.getText();
-            options.put("limit", resultLimit);
+            String resultLimitString = resultLimitTextField.getText();
+            if (resultLimitString.isEmpty()) {
+                AlertUtils.alert("Hãy nhập giá trị cho 'Giới hạn số lượng kết quả trả về' hoặc bỏ check tùy chọn này.");
+                return;
+            }
+
+            if (Integer.parseInt(resultLimitString) == 0) {
+                AlertUtils.alert("'Giới hạn số lượng kết quả trả về' phải có giá trị tối thiểu là 1.");
+                return;
+            }
+
+            options.put("limit", resultLimitString);
         }
 
         if (minDaysCheckBox.isSelected()) {
@@ -143,26 +167,38 @@ public class MainController implements Initializable {
         }
 
         if (dayCountCheckBox.isSelected()) {
-            String dayCount = dayCountTextField.getText();
-            options.put("numDaysOn", dayCount);
+            String dayCountString = dayCountTextField.getText();
+
+            if (dayCountString.isEmpty()) {
+                AlertUtils.alert("Hãy nhập giá trị cho 'Bắt buộc số ngày học trong tuần' hoặc bỏ check tùy chọn này.");
+                return;
+            }
+
+            int dayCount = Integer.parseInt(dayCountString);
+            if (dayCount < 1 || dayCount > 6) {
+                AlertUtils.alert("'Bắt buộc số ngày học trong tuần' phải có giá trị trong khoảng 1 đến 6.");
+                return;
+            }
+
+            options.put("numDaysOn", dayCountString);
         }
 
         if (daySessionCheckBox.isSelected()) {
             RadioButton selectedDaySession = (RadioButton) daySessionToggleGroup.getSelectedToggle();
 
-            switch (selectedDaySession.getText()) {
-                case MORNING_ONLY:
-                    options.put("morning", true);
-                    break;
-                case AFTERNOON_ONLY:
-                    options.put("afternoon", true);
-                    break;
-                case MORNING_AND_AFTERNOON:
-                    options.put("morning", true);
-                    options.put("afternoon", true);
-                    break;
+            if (selectedDaySession == null) {
+                AlertUtils.alert("Hãy chọn giá trị cho 'Bắt buộc buổi học trong tuần' hoặc bỏ check tùy chọn này.");
+                return;
             }
 
+            switch (selectedDaySession.getText()) {
+                case MORNING_ONLY -> options.put("morning", true);
+                case AFTERNOON_ONLY -> options.put("afternoon", true);
+                case MORNING_AND_AFTERNOON -> {
+                    options.put("morning", true);
+                    options.put("afternoon", true);
+                }
+            }
         }
 
         if (weekDaysCheckBox.isSelected()) {
@@ -175,11 +211,15 @@ public class MainController implements Initializable {
                 String day = checkBox.getText().replace("Thứ ", "");
                 studyDays.add(day);
             }
+
+            if (studyDays.isEmpty()) {
+                AlertUtils.alert("Hãy chọn giá trị cho 'Bắt buộc ngày học trong tuần' hoặc bỏ check tùy chọn này.");
+                return;
+            }
+
             String daysOn = String.join(",", studyDays);
             options.put("daysOn", daysOn);
         }
-
-        System.out.println(options);
 
         Connection connection = new Connection("103.6.169.208", 6000);
         ArrayList<TimeTable> timeTables = connection.getTimeTables(options);
@@ -205,10 +245,31 @@ public class MainController implements Initializable {
             }
         });
 
-        // Max 6 characters
+        // Max length constraint
         addTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.length() > SUBJECT_REQUIRED_LENGTH) {
                 addTextField.setText(newValue.substring(0, SUBJECT_REQUIRED_LENGTH));
+            }
+        });
+    }
+
+    // Integer only text fields
+    public void initIntegerTextFields() {
+        subjectLimitTextField.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                subjectLimitTextField.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+
+        resultLimitTextField.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                resultLimitTextField.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+
+        dayCountTextField.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                dayCountTextField.setText(newValue.replaceAll("[^\\d]", ""));
             }
         });
     }
@@ -271,6 +332,7 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initAddTextField();
+        initIntegerTextFields();
         initSubjectListView();
         initOptionalCheckBoxes();
     }
