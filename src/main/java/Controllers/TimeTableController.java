@@ -17,13 +17,13 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class TimeTableController implements Initializable {
-    public ArrayList<TimeTable> timeTableList;
+    public ArrayList<Timetable> timetableList;
 
     @FXML
-    public TableView<TimeTableColumn> table;
+    public TableView<TimetableColumn> table;
 
     @FXML
-    public TableColumn<TimeTableColumn, String> timeTableColumn;
+    public TableColumn<TimetableColumn, String> timeTableColumn;
 
     @FXML
     public GridPane gridPane;
@@ -32,7 +32,7 @@ public class TimeTableController implements Initializable {
     public ComboBox<Integer> weekComboBox;
 
     ObservableList<Subject> subjects = FXCollections.observableArrayList();
-    ObservableList<TimeTableColumn> timeTables = FXCollections.observableArrayList();
+    ObservableList<TimetableColumn> timeTables = FXCollections.observableArrayList();
     ObservableList<Integer> weekNumber = FXCollections.observableArrayList();
 
     public void initGridPaneView(int numWeek) {
@@ -95,7 +95,7 @@ public class TimeTableController implements Initializable {
 
     public void initTableView() {
         table.setRowFactory(tv -> {
-            TableRow<TimeTableColumn> row = new TableRow<>();
+            TableRow<TimetableColumn> row = new TableRow<>();
 
             timeTableColumn.setCellValueFactory(data -> {
                 SimpleStringProperty property = new SimpleStringProperty();
@@ -106,11 +106,11 @@ public class TimeTableController implements Initializable {
             return row;
         });
 
-        int size = timeTableList.size();
+        int size = timetableList.size();
         for (int i = 1; i <= size; i++) {
-            TimeTableColumn timeTableColumn = new TimeTableColumn();
+            TimetableColumn timeTableColumn = new TimetableColumn();
             timeTableColumn.index = i;
-            timeTableColumn.timeTable = timeTableList.get(i - 1);
+            timeTableColumn.timeTable = timetableList.get(i - 1);
             timeTables.add(timeTableColumn);
         }
 

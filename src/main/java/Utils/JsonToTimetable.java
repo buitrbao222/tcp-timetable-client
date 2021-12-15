@@ -3,7 +3,7 @@ package Utils;
 import DTO.ClassSession;
 import DTO.Subject;
 import DTO.SubjectClass;
-import DTO.TimeTable;
+import DTO.Timetable;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -12,13 +12,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class JsonToTimetable {
-    private static ArrayList<TimeTable> addTimeTables(JSONArray jsonTimeTables) {
-        ArrayList<TimeTable> timeTables = new ArrayList<>();
+    private static ArrayList<Timetable> addTimetables(JSONArray jsonTimetables) {
+        ArrayList<Timetable> timetables = new ArrayList<>();
 
-        for (Object obj : jsonTimeTables) {
+        for (Object obj : jsonTimetables) {
             JSONObject jsonObject = (JSONObject) obj;
 
-            TimeTable timeTable = new TimeTable();
+            Timetable timeTable = new Timetable();
 
             JSONArray jsonSubjects = jsonObject.getJSONArray("subjects");
             ArrayList<Subject> subjects = addSubjects(jsonSubjects);
@@ -31,9 +31,9 @@ public class JsonToTimetable {
             timeTable.numDaysOn = Integer.parseInt(jsonObject.getString("numDaysOn"));
             timeTable.morning = Boolean.parseBoolean(jsonObject.getString("morning"));
 
-            timeTables.add(timeTable);
+            timetables.add(timeTable);
         }
-        return timeTables;
+        return timetables;
     }
 
     private static ArrayList<Subject> addSubjects(JSONArray jsonSubjects) {
@@ -102,16 +102,16 @@ public class JsonToTimetable {
         return classSessions;
     }
 
-    public static ArrayList<TimeTable> convert(String data) throws IOException {
-        ArrayList<TimeTable> timeTables = new ArrayList<>();
+    public static ArrayList<Timetable> convert(String data) throws IOException {
+        ArrayList<Timetable> timetables = new ArrayList<>();
 
         if (!data.isEmpty()) {
             JSONObject object = new JSONObject(data);
 
-            JSONArray jsonTimeTables = object.getJSONArray("timeTables");
+            JSONArray jsonTimetables = object.getJSONArray("timeTables");
 
-            timeTables = addTimeTables(jsonTimeTables);
+            timetables = addTimetables(jsonTimetables);
         }
-        return timeTables;
+        return timetables;
     }
 }

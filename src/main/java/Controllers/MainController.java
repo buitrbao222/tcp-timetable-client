@@ -1,9 +1,8 @@
 package Controllers;
 
-import DTO.TimeTable;
+import DTO.Timetable;
 import Socket.Connection;
 import Utils.AlertUtils;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -222,13 +221,13 @@ public class MainController implements Initializable {
         }
 
         Connection connection = new Connection("103.6.169.208", 6000);
-        ArrayList<TimeTable> timeTables = connection.getTimeTables(options);
+        ArrayList<Timetable> timetables = connection.getTimetables(options);
         connection.close();
 
-        if (!timeTables.isEmpty()) {
+        if (!timetables.isEmpty()) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/timetable.fxml"));
             TimeTableController timeTableController = new TimeTableController();
-            timeTableController.timeTableList = timeTables;
+            timeTableController.timetableList = timetables;
             fxmlLoader.setController(timeTableController);
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = new Stage();

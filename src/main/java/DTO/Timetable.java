@@ -1,6 +1,6 @@
 package DTO;
 
-public class TimeTable {
+public class Timetable {
     public boolean afternoon;
     public int[] daysOn;
     public Subject[] subjects;

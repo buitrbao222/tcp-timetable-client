@@ -1,6 +1,6 @@
 package Socket;
 
-import DTO.TimeTable;
+import DTO.Timetable;
 import Socket.Encryption.AES;
 import Socket.Encryption.Crypto;
 import Socket.Encryption.HybridSystem;
@@ -27,22 +27,22 @@ public class Connection {
         this.io = new IOStream(this.socket);
     }
 
-    public ArrayList<TimeTable> getTimeTables(JSONObject options) {
+    public ArrayList<Timetable> getTimetables(JSONObject options) {
 
-        ArrayList<TimeTable> timeTables = new ArrayList<>();
+        ArrayList<Timetable> timetables = new ArrayList<>();
         AES aes;
         SecretKey secretKey;
 
         try {
             //Receive public key
-            String pulbicKeyJson = receive();
-            String pulbicKeyString = JSON.getString(pulbicKeyJson, "Public key");
-            PublicKey publicKey = Crypto.toPublicKey(pulbicKeyString);
+            String publicKeyJson = receive();
+            String publicKeyString = JSON.getString(publicKeyJson, "Public key");
+            PublicKey publicKey = Crypto.toPublicKey(publicKeyString);
 
             //Send secret key
             aes = new AES();
             secretKey = aes.getSecretKey();
-            String secretKeyJson = JSON.toJSON("Secret key", HybridSystem.encrpySecretKey(aes.getSecretKey(), publicKey));
+            String secretKeyJson = JSON.toJSON("Secret key", HybridSystem.encryptSecretKey(aes.getSecretKey(), publicKey));
             send(secretKeyJson);
 
             String message = receive();
@@ -56,13 +56,13 @@ public class Connection {
 
                 System.out.println("Client receive: " + data);
 
-                timeTables = JsonToTimetable.convert(data);
+                timetables = JsonToTimetable.convert(data);
             }
 
         } catch (IOException | DecryptionException | EncryptionException e) {
             e.printStackTrace();
         }
-        return timeTables;
+        return timetables;
     }
 
     public void send(String message) throws IOException {
@@ -74,11 +74,11 @@ public class Connection {
     }
 
     public void send(String message, SecretKey secretKey) throws IOException, EncryptionException {
-        io.send(Crypto.encrpy(Crypto.Cipher_AES, secretKey, message));
+        io.send(Crypto.encrypt(Crypto.Cipher_AES, secretKey, message));
     }
 
     public String receive(SecretKey secretKey) throws IOException, DecryptionException {
-        return Crypto.decrpy(Crypto.Cipher_AES, secretKey, io.receive());
+        return Crypto.decrypt(Crypto.Cipher_AES, secretKey, io.receive());
     }
 
     public void close() throws IOException {

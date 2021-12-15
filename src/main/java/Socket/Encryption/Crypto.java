@@ -25,7 +25,7 @@ public abstract class Crypto {
         }
     }
 
-    public static String encrpy(Cipher cipher, Key key, String plainText) throws EncryptionException {
+    public static String encrypt(Cipher cipher, Key key, String plainText) throws EncryptionException {
         try {
             cipher.init(Cipher.ENCRYPT_MODE, key);
             byte encryptOut[] = cipher.doFinal(plainText.getBytes());
@@ -35,7 +35,7 @@ public abstract class Crypto {
         }
     }
 
-    public static String decrpy(Cipher cipher, Key key, String cipherText) throws DecryptionException {
+    public static String decrypt(Cipher cipher, Key key, String cipherText) throws DecryptionException {
         try {
             cipher.init(Cipher.DECRYPT_MODE, key);
             byte decryptOut[] = cipher.doFinal(Base64.getDecoder().decode(cipherText));
