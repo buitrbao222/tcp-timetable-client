@@ -225,16 +225,21 @@ public class MainController implements Initializable {
         ArrayList<TimeTable> timeTables = connection.getTimeTables(options);
         connection.close();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/timetable.fxml"));
-        TimeTableController timeTableController = new TimeTableController();
-        timeTableController.timeTableList = timeTables;
-        fxmlLoader.setController(timeTableController);
-        Scene scene = new Scene(fxmlLoader.load());
-        Stage stage = new Stage();
-        stage.setTitle("Thời khóa biểu SGU");
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
+        if (!timeTables.isEmpty()) {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/timetable.fxml"));
+            TimeTableController timeTableController = new TimeTableController();
+            timeTableController.timeTableList = timeTables;
+            fxmlLoader.setController(timeTableController);
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+            stage.setTitle("Thời khóa biểu SGU");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+        } else {
+            AlertUtils.alert("Không có thời khóa biểu phù hợp theo yêu cầu");
+            return;
+        }
     }
 
     public void initAddTextField() {

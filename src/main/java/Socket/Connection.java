@@ -56,7 +56,7 @@ public class Connection {
 
                 System.out.println("Client receive: " + data);
 
-                timeTables = JsonToTimetable.covert(data);
+                timeTables = JsonToTimetable.convert(data);
             }
 
         } catch (IOException | DecryptionException | EncryptionException e) {
