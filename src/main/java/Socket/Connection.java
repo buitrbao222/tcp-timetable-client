@@ -6,6 +6,7 @@ import Socket.Encryption.Crypto;
 import Socket.Encryption.HybridSystem;
 import Socket.Exception.DecryptionException;
 import Socket.Exception.EncryptionException;
+import Utils.AlertUtils;
 import Utils.IOStream;
 import Utils.JSON;
 import Utils.JsonToTimetable;
@@ -27,22 +28,20 @@ public class Connection {
         this.io = new IOStream(this.socket);
     }
 
-    public ArrayList<Timetable> getTimetables(JSONObject options) {
-
+    public String getTimetables(JSONObject options) {
         ArrayList<Timetable> timetables = new ArrayList<>();
-        AES aes;
-        SecretKey secretKey;
 
         try {
-            //Receive public key
+            // Receive public key
             String publicKeyJson = receive();
             String publicKeyString = JSON.getString(publicKeyJson, "Public key");
             PublicKey publicKey = Crypto.toPublicKey(publicKeyString);
 
-            //Send secret key
-            aes = new AES();
-            secretKey = aes.getSecretKey();
-            String secretKeyJson = JSON.toJSON("Secret key", HybridSystem.encryptSecretKey(aes.getSecretKey(), publicKey));
+            // Send secret key
+            AES aes = new AES();
+            SecretKey secretKey = aes.getSecretKey();
+            String encryptedSecretKey = HybridSystem.encryptSecretKey(secretKey, publicKey);
+            String secretKeyJson = JSON.toJSON("Secret key", encryptedSecretKey);
             send(secretKeyJson);
 
             String message = receive();
@@ -51,18 +50,19 @@ public class Connection {
                 // Send request with options
                 send(options.toString(), secretKey);
 
-                // Receive json data
+                // Receive JSON data
                 String data = receive(secretKey);
 
                 System.out.println("Client receive: " + data);
 
-                timetables = JsonToTimetable.convert(data);
+                return data;
             }
 
         } catch (IOException | DecryptionException | EncryptionException e) {
             e.printStackTrace();
         }
-        return timetables;
+
+        return "error";
     }
 
     public void send(String message) throws IOException {

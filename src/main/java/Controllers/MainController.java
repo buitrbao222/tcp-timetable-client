@@ -3,6 +3,7 @@ package Controllers;
 import DTO.Timetable;
 import Socket.Connection;
 import Utils.AlertUtils;
+import Utils.JsonToTimetable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -221,12 +222,40 @@ public class MainController implements Initializable {
         }
 
         Connection connection = new Connection("103.6.169.208", 6000);
-        ArrayList<Timetable> timetables = connection.getTimetables(options);
+
+        String response = connection.getTimetables(options);
+
         connection.close();
+
+        // Unexpected error
+        if (response.equals("error")) {
+            AlertUtils.alert("Đã có lỗi bất ngờ xảy ra.");
+            return;
+        }
+
+        JSONObject jsonData = new JSONObject(response);
+
+        // Has error from server
+        if (jsonData.keySet().contains("error")) {
+            String error = jsonData.getString("error");
+
+            String message = "";
+            if (error.startsWith("Invalid subject")) {
+                String subject = error.replaceAll("Invalid subject: ", "");
+                message = "Mã môn học không tồn tại: " + subject;
+            } else {
+                message = error;
+            }
+
+            AlertUtils.alert(message);
+            return;
+        }
+
+        ArrayList<Timetable> timetables = JsonToTimetable.convert(response);
 
         if (!timetables.isEmpty()) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/timetable.fxml"));
-            TimeTableController timeTableController = new TimeTableController();
+            TimetableController timeTableController = new TimetableController();
             timeTableController.timetableList = timetables;
             fxmlLoader.setController(timeTableController);
             Scene scene = new Scene(fxmlLoader.load());
@@ -237,7 +266,6 @@ public class MainController implements Initializable {
             stage.show();
         } else {
             AlertUtils.alert("Không có thời khóa biểu phù hợp theo yêu cầu");
-            return;
         }
     }
 

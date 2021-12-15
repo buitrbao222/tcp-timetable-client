@@ -16,7 +16,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class TimeTableController implements Initializable {
+public class TimetableController implements Initializable {
     public ArrayList<Timetable> timetableList;
 
     @FXML
