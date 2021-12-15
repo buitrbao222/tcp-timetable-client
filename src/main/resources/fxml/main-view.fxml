@@ -12,145 +12,158 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefWidth="800.0" stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MainController">
+<VBox xmlns:fx="http://javafx.com/fxml/1" prefWidth="800.0" stylesheets="@../css/main.css"
+      xmlns="http://javafx.com/javafx/17" fx:controller="Controllers.MainController">
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
     <VBox maxWidth="1.7976931348623157E308" spacing="20.0">
         <HBox spacing="20.0" VBox.vgrow="ALWAYS">
-            <ListView fx:id="subjectsListView" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="220.0" HBox.hgrow="ALWAYS" />
+            <ListView fx:id="subjectsListView" editable="true" maxHeight="1.7976931348623157E308"
+                      maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="220.0" HBox.hgrow="ALWAYS"/>
             <VBox spacing="20.0">
                 <HBox>
                     <Button mnemonicParsing="false" onAction="#onUpClick">
                         <graphic>
-                            <SVGPath content="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" styleClass="svg" />
+                            <SVGPath
+                                    content="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"
+                                    styleClass="svg"/>
                         </graphic>
                     </Button>
-                    <VBox HBox.hgrow="ALWAYS" />
+                    <VBox HBox.hgrow="ALWAYS"/>
                     <Button mnemonicParsing="false" onAction="#onDownClick">
                         <graphic>
-                            <SVGPath content="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" styleClass="svg" />
+                            <SVGPath
+                                    content="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
+                                    styleClass="svg"/>
                         </graphic>
                     </Button>
-                    <VBox layoutX="70.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
+                    <VBox layoutX="70.0" layoutY="10.0" HBox.hgrow="ALWAYS"/>
                     <Button mnemonicParsing="false" onAction="#onDeleteClick" text="Xóa">
                         <font>
-                            <Font name="System Bold" size="12.0" />
+                            <Font name="System Bold" size="12.0"/>
                         </font>
                     </Button>
                 </HBox>
                 <HBox alignment="BOTTOM_LEFT" spacing="20.0">
                     <TextField fx:id="addTextField" prefWidth="140.0">
                         <HBox.margin>
-                            <Insets />
+                            <Insets/>
                         </HBox.margin>
                     </TextField>
                     <Button mnemonicParsing="false" onAction="#onAddClick" text="Thêm">
                         <HBox.margin>
-                            <Insets />
+                            <Insets/>
                         </HBox.margin>
                         <font>
-                            <Font name="System Bold" size="12.0" />
+                            <Font name="System Bold" size="12.0"/>
                         </font>
                     </Button>
                 </HBox>
                 <VBox styleClass="form-group">
                     <CheckBox fx:id="subjectLimitCheckBox" mnemonicParsing="false" text="Giới hạn số lượng môn học">
                         <VBox.margin>
-                            <Insets />
+                            <Insets/>
                         </VBox.margin>
                         <font>
-                            <Font name="System Bold" size="12.0" />
+                            <Font name="System Bold" size="12.0"/>
                         </font>
                     </CheckBox>
                     <TextField fx:id="subjectLimitTextField" disable="true">
                         <VBox.margin>
-                            <Insets left="22.0" />
+                            <Insets left="22.0"/>
                         </VBox.margin>
                     </TextField>
                 </VBox>
                 <VBox styleClass="form-group">
                     <CheckBox fx:id="resultLimitCheckBox" mnemonicParsing="false" text="Giới hạn số lượng kết quả">
                         <font>
-                            <Font name="System Bold" size="12.0" />
+                            <Font name="System Bold" size="12.0"/>
                         </font>
                     </CheckBox>
                     <TextField fx:id="resultLimitTextField" disable="true">
                         <VBox.margin>
-                            <Insets left="22.0" />
+                            <Insets left="22.0"/>
                         </VBox.margin>
                     </TextField>
                 </VBox>
-            <VBox layoutX="10.0" layoutY="170.0" styleClass="form-group">
-               <children>
-                  <CheckBox fx:id="minDaysCheckBox" mnemonicParsing="false" text="Ưu tiên ít ngày học nhất">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </CheckBox>
-               </children>
-            </VBox>
+                <VBox layoutX="10.0" layoutY="170.0" styleClass="form-group">
+                    <children>
+                        <CheckBox fx:id="minDaysCheckBox" mnemonicParsing="false" text="Ưu tiên ít ngày học nhất">
+                            <font>
+                                <Font name="System Bold" size="12.0"/>
+                            </font>
+                        </CheckBox>
+                    </children>
+                </VBox>
                 <VBox styleClass="form-group">
                     <CheckBox fx:id="dayCountCheckBox" mnemonicParsing="false" text="Bắt buộc số ngày học trong tuần">
                         <font>
-                            <Font name="System Bold" size="12.0" />
+                            <Font name="System Bold" size="12.0"/>
                         </font>
                     </CheckBox>
                     <TextField fx:id="dayCountTextField" disable="true">
                         <VBox.margin>
-                            <Insets left="22.0" />
+                            <Insets left="22.0"/>
                         </VBox.margin>
                     </TextField>
                 </VBox>
                 <VBox styleClass="form-group">
                     <CheckBox fx:id="daySessionCheckBox" mnemonicParsing="false" text="Bắt buộc buổi học trong tuần">
                         <VBox.margin>
-                            <Insets />
+                            <Insets/>
                         </VBox.margin>
                         <font>
-                            <Font name="System Bold" size="12.0" />
+                            <Font name="System Bold" size="12.0"/>
                         </font>
                     </CheckBox>
                     <VBox spacing="12.0">
                         <VBox.margin>
-                            <Insets left="22.0" />
+                            <Insets left="22.0"/>
                         </VBox.margin>
-                        <RadioButton fx:id="morningOnlyRadioButton" disable="true" mnemonicParsing="false" text="MORNING_ONLY">
+                        <RadioButton fx:id="morningOnlyRadioButton" disable="true" mnemonicParsing="false"
+                                     text="MORNING_ONLY">
                             <toggleGroup>
-                                <ToggleGroup fx:id="daySessionToggleGroup" />
+                                <ToggleGroup fx:id="daySessionToggleGroup"/>
                             </toggleGroup>
                         </RadioButton>
-                        <RadioButton fx:id="afternoonOnlyRadioButton" disable="true" mnemonicParsing="false" text="AFTERNOON_ONLY" toggleGroup="$daySessionToggleGroup" />
-                        <RadioButton fx:id="morningAndAfternoonRadioButton" disable="true" layoutX="10.0" layoutY="39.0" mnemonicParsing="false" text="MORNING_AND_AFTERNOON" toggleGroup="$daySessionToggleGroup" />
+                        <RadioButton fx:id="afternoonOnlyRadioButton" disable="true" mnemonicParsing="false"
+                                     text="AFTERNOON_ONLY" toggleGroup="$daySessionToggleGroup"/>
+                        <RadioButton fx:id="morningAndAfternoonRadioButton" disable="true" layoutX="10.0" layoutY="39.0"
+                                     mnemonicParsing="false" text="MORNING_AND_AFTERNOON"
+                                     toggleGroup="$daySessionToggleGroup"/>
                     </VBox>
                 </VBox>
                 <VBox styleClass="form-group">
                     <CheckBox fx:id="weekDaysCheckBox" mnemonicParsing="false" text="Bắt buộc ngày học trong tuần">
                         <font>
-                            <Font name="System Bold" size="12.0" />
+                            <Font name="System Bold" size="12.0"/>
                         </font>
                     </CheckBox>
                     <HBox spacing="20.0">
                         <VBox.margin>
-                            <Insets left="22.0" />
+                            <Insets left="22.0"/>
                         </VBox.margin>
                         <VBox spacing="12.0">
-                            <CheckBox fx:id="weekDay2" disable="true" mnemonicParsing="false" text="Thứ 2" />
-                            <CheckBox fx:id="weekDay4" disable="true" layoutX="10.0" layoutY="35.0" mnemonicParsing="false" text="Thứ 4" />
-                            <CheckBox fx:id="weekDay6" disable="true" mnemonicParsing="false" text="Thứ 6" />
+                            <CheckBox fx:id="weekDay2" disable="true" mnemonicParsing="false" text="Thứ 2"/>
+                            <CheckBox fx:id="weekDay4" disable="true" layoutX="10.0" layoutY="35.0"
+                                      mnemonicParsing="false" text="Thứ 4"/>
+                            <CheckBox fx:id="weekDay6" disable="true" mnemonicParsing="false" text="Thứ 6"/>
                         </VBox>
                         <VBox layoutX="10.0" layoutY="10.0" spacing="12.0">
-                            <CheckBox fx:id="weekDay3" disable="true" mnemonicParsing="false" text="Thứ 3" />
-                            <CheckBox fx:id="weekDay5" disable="true" mnemonicParsing="false" text="Thứ 5" />
-                            <CheckBox fx:id="weekDay7" disable="true" layoutX="10.0" layoutY="35.0" mnemonicParsing="false" text="Thứ 7" />
+                            <CheckBox fx:id="weekDay3" disable="true" mnemonicParsing="false" text="Thứ 3"/>
+                            <CheckBox fx:id="weekDay5" disable="true" mnemonicParsing="false" text="Thứ 5"/>
+                            <CheckBox fx:id="weekDay7" disable="true" layoutX="10.0" layoutY="35.0"
+                                      mnemonicParsing="false" text="Thứ 7"/>
                         </VBox>
                     </HBox>
                 </VBox>
             </VBox>
         </HBox>
-        <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onCreateClick" prefHeight="50.0" text="Tạo thời khóa biểu" textAlignment="CENTER">
+        <Button alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onCreateClick"
+                prefHeight="50.0" text="Tạo thời khóa biểu" textAlignment="CENTER">
             <font>
-                <Font name="System Bold" size="18.0" />
+                <Font name="System Bold" size="18.0"/>
             </font>
         </Button>
     </VBox>
