@@ -102,7 +102,7 @@ public class JsonToTimetable {
         return classSessions;
     }
 
-    public static ArrayList<TimeTable> covert(String data) throws IOException {
+    public static ArrayList<TimeTable> convert(String data) throws IOException {
         ArrayList<TimeTable> timeTables = new ArrayList<>();
 
         if (!data.isEmpty()) {
