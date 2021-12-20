@@ -17,13 +17,13 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class TimetableController implements Initializable {
-    public ArrayList<Timetable> timetableList;
+    public ArrayList<Timetable> timetables;
 
     @FXML
-    public TableView<TimetableColumn> table;
+    public TableView<TimetableColumn> resultsTable;
 
     @FXML
-    public TableColumn<TimetableColumn, String> timeTableColumn;
+    public TableColumn<TimetableColumn, String> resultsColumn;
 
     @FXML
     public GridPane gridPane;
@@ -32,7 +32,7 @@ public class TimetableController implements Initializable {
     public ComboBox<Integer> weekComboBox;
 
     ObservableList<Subject> subjects = FXCollections.observableArrayList();
-    ObservableList<TimetableColumn> timeTables = FXCollections.observableArrayList();
+    ObservableList<TimetableColumn> results = FXCollections.observableArrayList();
     ObservableList<Integer> weekNumber = FXCollections.observableArrayList();
 
     public void initGridPaneView(int numWeek) {
@@ -94,35 +94,30 @@ public class TimetableController implements Initializable {
     }
 
     public void initTableView() {
-        table.setRowFactory(tv -> {
-            TableRow<TimetableColumn> row = new TableRow<>();
+        resultsColumn.setCellValueFactory(data -> {
+            SimpleStringProperty property = new SimpleStringProperty();
+            property.setValue("Thời khóa biểu " + data.getValue().index);
 
-            timeTableColumn.setCellValueFactory(data -> {
-                SimpleStringProperty property = new SimpleStringProperty();
-                property.setValue("Thời khóa biểu " + data.getValue().index);
-                return property;
-            });
-
-            return row;
+            return property;
         });
 
-        int size = timetableList.size();
+        int size = timetables.size();
         for (int i = 1; i <= size; i++) {
-            TimetableColumn timeTableColumn = new TimetableColumn();
-            timeTableColumn.index = i;
-            timeTableColumn.timeTable = timetableList.get(i - 1);
-            timeTables.add(timeTableColumn);
+            TimetableColumn timetablesColumn = new TimetableColumn();
+            timetablesColumn.index = i;
+            timetablesColumn.timeTable = timetables.get(i - 1);
+            results.add(timetablesColumn);
         }
 
-        table.setItems(timeTables);
+        resultsTable.setItems(results);
 
-        table.getSelectionModel().selectedItemProperty().addListener((observableValue, timeTable, t1) -> {
+        resultsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, timeTable, t1) -> {
             subjects.clear();
             weekComboBox.getItems().clear();
-            subjects.addAll(timeTables.get(table.getSelectionModel().getSelectedIndex()).timeTable.subjects);
+            subjects.addAll(results.get(resultsTable.getSelectionModel().getSelectedIndex()).timeTable.subjects);
             initComboBox();
         });
-        table.getSelectionModel().selectFirst();
+        resultsTable.getSelectionModel().selectFirst();
     }
 
     @Override

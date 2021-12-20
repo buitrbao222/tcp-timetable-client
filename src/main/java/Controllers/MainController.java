@@ -256,7 +256,7 @@ public class MainController implements Initializable {
         if (!timetables.isEmpty()) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/timetable.fxml"));
             TimetableController timeTableController = new TimetableController();
-            timeTableController.timetableList = timetables;
+            timeTableController.timetables = timetables;
             fxmlLoader.setController(timeTableController);
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = new Stage();
