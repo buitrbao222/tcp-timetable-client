@@ -70,6 +70,8 @@ public class MainController implements Initializable {
         }
 
         subjects.add(subject);
+
+        addTextField.setText("");
     }
 
     @FXML
