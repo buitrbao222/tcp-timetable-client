@@ -1,6 +1,6 @@
 package DTO;
 
-public class TimetableColumn {
+public class ResultRow {
     public int index;
     public Timetable timeTable;
 }

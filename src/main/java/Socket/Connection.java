@@ -1,15 +1,12 @@
 package Socket;
 
-import DTO.Timetable;
 import Socket.Encryption.AES;
 import Socket.Encryption.Crypto;
 import Socket.Encryption.HybridSystem;
 import Socket.Exception.DecryptionException;
 import Socket.Exception.EncryptionException;
-import Utils.AlertUtils;
 import Utils.IOStream;
 import Utils.JSON;
-import Utils.JsonToTimetable;
 import org.json.JSONObject;
 
 import javax.crypto.SecretKey;

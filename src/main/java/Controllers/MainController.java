@@ -1,5 +1,6 @@
 package Controllers;
 
+import DTO.Color;
 import DTO.Timetable;
 import Socket.Connection;
 import Utils.AlertUtils;
@@ -26,7 +27,32 @@ public class MainController implements Initializable {
     private final static String MORNING_AND_AFTERNOON = "Phải có sáng lẫn chiều";
     private final static int SUBJECT_REQUIRED_LENGTH = 6;
 
-    public ObservableList<String> subjects = FXCollections.observableArrayList();
+    //    private final static String host = "103.6.169.208";
+    private final static String host = "localhost";
+    private final static int port = 6000;
+
+    private static ArrayList<Color> colors = new ArrayList<>(Arrays.asList(
+            new Color("#F2716C", "black"),
+            new Color("#F69890", "black"),
+            new Color("#F6965A", "black"),
+            new Color("#FBBD98", "black"),
+            new Color("#FFDD00", "black"),
+            new Color("#FFEA95", "black"),
+            new Color("#2EB46F", "black"),
+            new Color("#75D17E", "black"),
+            new Color("#9EE5DD", "black"),
+            new Color("#967BDC", "black"),
+            new Color("#AC92ED", "black"),
+            new Color("#00AFFE", "black"),
+            new Color("#C9C9C9", "black"),
+            new Color("#C69C6C", "black"),
+            new Color("#764C24", "white"),
+            new Color("#8C6238", "white"),
+            new Color("#3A4255", "white"),
+            new Color("#646521", "white"),
+            new Color("#B83375", "white")));
+
+    public ObservableList<String> subjectList = FXCollections.observableArrayList();
 
     @FXML
     public TextField addTextField, subjectLimitTextField, resultLimitTextField, dayCountTextField;
@@ -64,13 +90,15 @@ public class MainController implements Initializable {
             return;
         }
 
-        if (subjects.contains(subject)) {
+        if (subjectList.contains(subject)) {
             AlertUtils.alert("Mã môn học này đã có trong danh sách");
             return;
         }
 
-        subjects.add(subject);
+        // Save subject
+        subjectList.add(subject);
 
+        // Reset add text field
         addTextField.setText("");
     }
 
@@ -87,7 +115,7 @@ public class MainController implements Initializable {
             return;
         }
 
-        Collections.swap(subjects, index, index - 1);
+        Collections.swap(subjectList, index, index - 1);
         subjectsListView.getSelectionModel().select(index - 1);
     }
 
@@ -100,11 +128,11 @@ public class MainController implements Initializable {
             return;
         }
 
-        if (index == subjects.size() - 1) {
+        if (index == subjectList.size() - 1) {
             return;
         }
 
-        Collections.swap(subjects, index, index + 1);
+        Collections.swap(subjectList, index, index + 1);
         subjectsListView.getSelectionModel().select(index + 1);
     }
 
@@ -117,13 +145,17 @@ public class MainController implements Initializable {
             return;
         }
 
-        subjects.remove(index);
+        // Get subject id
+        String subjectId = subjectList.get(index);
+
+        // Remove subject
+        subjectList.remove(index);
     }
 
     public void onCreateClick() throws IOException {
         JSONObject options = new JSONObject();
 
-        if (subjects.size() == 0) {
+        if (subjectList.size() == 0) {
             AlertUtils.alert("Hãy thêm ít nhất 1 mã môn học");
             return;
         }
@@ -223,9 +255,7 @@ public class MainController implements Initializable {
             options.put("daysOn", daysOn);
         }
 
-        String hostLocal = "localhost";
-        String host = "103.6.169.208";
-        Connection connection = new Connection(hostLocal, 6000);
+        Connection connection = new Connection(host, port);
 
         String response = connection.getTimetables(options);
 
@@ -258,10 +288,20 @@ public class MainController implements Initializable {
         ArrayList<Timetable> timetables = JsonToTimetable.convert(response);
 
         if (!timetables.isEmpty()) {
+            HashMap<String, Color> subjectColorMap = new HashMap<>();
+
+            // Pick random colors
+            for (var subject : subjectList) {
+                int randomColorIndex = (int) (Math.random() * colors.size());
+                Color randomColor = colors.remove(randomColorIndex);
+                subjectColorMap.put(subject, randomColor);
+            }
+
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/timetable.fxml"));
-            TimetableController timeTableController = new TimetableController();
-            timeTableController.timetables = timetables;
-            fxmlLoader.setController(timeTableController);
+            TimetableController controller = new TimetableController();
+            controller.timetables = timetables;
+            controller.subjectColorMap = subjectColorMap;
+            fxmlLoader.setController(controller);
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = new Stage();
             stage.setTitle("Thời khóa biểu SGU");
@@ -312,7 +352,7 @@ public class MainController implements Initializable {
 
     public void initSubjectListView() {
         // Bind subjects list
-        subjectsListView.setItems(subjects);
+        subjectsListView.setItems(subjectList);
 
         // Delete selected row on DELETE key press
         subjectsListView.setOnKeyPressed(keyEvent -> {
@@ -342,7 +382,6 @@ public class MainController implements Initializable {
         dayCountCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             dayCountTextField.setDisable(oldValue);
         });
-
 
         // Set toggle labels
         morningOnlyRadioButton.setText(MORNING_ONLY);

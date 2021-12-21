@@ -14,16 +14,18 @@ import javafx.util.Callback;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class TimetableController implements Initializable {
     public ArrayList<Timetable> timetables;
+    public HashMap<String, Color> subjectColorMap;
 
     @FXML
-    public TableView<TimetableColumn> resultsTable;
+    public TableView<ResultRow> resultsTable;
 
     @FXML
-    public TableColumn<TimetableColumn, String> resultsColumn;
+    public TableColumn<ResultRow, String> resultsColumn;
 
     @FXML
     public GridPane gridPane;
@@ -32,27 +34,41 @@ public class TimetableController implements Initializable {
     public ComboBox<Integer> weekComboBox;
 
     ObservableList<Subject> subjects = FXCollections.observableArrayList();
-    ObservableList<TimetableColumn> results = FXCollections.observableArrayList();
+    ObservableList<ResultRow> results = FXCollections.observableArrayList();
     ObservableList<Integer> weekNumber = FXCollections.observableArrayList();
 
     public void initGridPaneView(int numWeek) {
         gridPane.getChildren().removeIf(node -> node instanceof TextFlow);
         for (Subject subject : subjects) {
-            SubjectClass[] subjectClasses = subject.classes;
-            for (SubjectClass subjectClass : subjectClasses) {
-                ClassSession[] classSessions = subjectClass.sessions;
-                for (ClassSession classSession : classSessions) {
-                    if (classSession.weeks[numWeek]) {
-                        int x = classSession.day - 1;
-                        int y = classSession.start;
-                        int length = classSession.length;
-                        Text idSubject = new Text("Mã: " + subject.subjectId + "\n");
-                        Text roomSubject = new Text("Phòng: " + classSession.room + "\n");
-                        Text groupSubject = new Text("Nhóm: " + subjectClass.group + "\n");
-                        Text nameSubject = new Text("Tên: " + subject.subjectName);
-                        TextFlow timeTableTextFlow = new TextFlow(idSubject, roomSubject, groupSubject, nameSubject);
-                        timeTableTextFlow.setStyle("-fx-background-color: lightblue;-fx-border-color: black;");
-                        gridPane.add(timeTableTextFlow, x, y, 1, length);
+            Color color = subjectColorMap.get(subject.subjectId);
+            String textColor = color.text;
+            String backgroundColor = color.background;
+
+            SubjectClass[] classes = subject.classes;
+
+            for (SubjectClass clazz : classes) {
+                ClassSession[] sessions = clazz.sessions;
+                for (ClassSession session : sessions) {
+                    if (session.weeks[numWeek]) {
+                        int x = session.day - 1;
+                        int y = session.start;
+                        int length = session.length;
+
+                        Text id = new Text(subject.subjectId + "\n");
+                        Text name = new Text(subject.subjectName + "\n");
+                        Text group = new Text("Nhóm " + clazz.group + "\n");
+                        Text room = new Text("Phòng " + session.room + "\n");
+
+                        id.setStyle("-fx-fill: " + textColor + ";");
+                        name.setStyle("-fx-fill: " + textColor + ";");
+                        group.setStyle("-fx-fill: " + textColor + ";");
+                        room.setStyle("-fx-fill: " + textColor + ";");
+
+                        TextFlow textFlow = new TextFlow(id, name, group, room);
+                        textFlow.setStyle("-fx-background-color: " + backgroundColor + ";" +
+                                                  "-fx-border-color: black;" +
+                                                  "-fx-padding: 8 8 8 8;");
+                        gridPane.add(textFlow, x, y, 1, length);
                     }
                 }
             }
@@ -74,9 +90,9 @@ public class TimetableController implements Initializable {
         weekComboBox.setButtonCell(factory.call(null));
 
         weekComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
-            if (weekComboBox.getSelectionModel().getSelectedIndex() != -1) {
-                int numWeek = weekComboBox.getSelectionModel().getSelectedIndex();
-                initGridPaneView(numWeek);
+            int selectedIndex = weekComboBox.getSelectionModel().getSelectedIndex();
+            if (selectedIndex != -1) {
+                initGridPaneView(selectedIndex);
             }
         });
 
@@ -94,6 +110,7 @@ public class TimetableController implements Initializable {
     }
 
     public void initTableView() {
+        // Results column render
         resultsColumn.setCellValueFactory(data -> {
             SimpleStringProperty property = new SimpleStringProperty();
             property.setValue("Thời khóa biểu " + data.getValue().index);
@@ -101,22 +118,24 @@ public class TimetableController implements Initializable {
             return property;
         });
 
+        // Populate results table
         int size = timetables.size();
         for (int i = 1; i <= size; i++) {
-            TimetableColumn timetablesColumn = new TimetableColumn();
-            timetablesColumn.index = i;
-            timetablesColumn.timeTable = timetables.get(i - 1);
-            results.add(timetablesColumn);
+            ResultRow resultRow = new ResultRow();
+            resultRow.index = i;
+            resultRow.timeTable = timetables.get(i - 1);
+            results.add(resultRow);
         }
 
         resultsTable.setItems(results);
 
-        resultsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, timeTable, t1) -> {
+        resultsTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             subjects.clear();
+            subjects.addAll(newValue.timeTable.subjects);
             weekComboBox.getItems().clear();
-            subjects.addAll(results.get(resultsTable.getSelectionModel().getSelectedIndex()).timeTable.subjects);
             initComboBox();
         });
+
         resultsTable.getSelectionModel().selectFirst();
     }
 

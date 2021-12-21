@@ -18,18 +18,18 @@ public class JsonToTimetable {
         for (Object obj : jsonTimetables) {
             JSONObject jsonObject = (JSONObject) obj;
 
-            Timetable timeTable = new Timetable();
+            Timetable timetable = new Timetable();
 
             JSONArray jsonSubjects = jsonObject.getJSONArray("subjects");
             ArrayList<Subject> subjects = addSubjects(jsonSubjects);
 
-            timeTable.afternoon = Boolean.parseBoolean(jsonObject.getString("afternoon"));
-            timeTable.daysOn = jsonObject.getString("daysOn");
-            timeTable.subjects = subjects.toArray(new Subject[0]);
-            timeTable.numDaysOn = Integer.parseInt(jsonObject.getString("numDaysOn"));
-            timeTable.morning = Boolean.parseBoolean(jsonObject.getString("morning"));
+            timetable.afternoon = Boolean.parseBoolean(jsonObject.getString("afternoon"));
+            timetable.daysOn = jsonObject.getString("daysOn");
+            timetable.subjects = subjects.toArray(new Subject[0]);
+            timetable.numDaysOn = Integer.parseInt(jsonObject.getString("numDaysOn"));
+            timetable.morning = Boolean.parseBoolean(jsonObject.getString("morning"));
 
-            timetables.add(timeTable);
+            timetables.add(timetable);
         }
         return timetables;
     }
