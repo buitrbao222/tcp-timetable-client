@@ -24,9 +24,7 @@ public class JsonToTimetable {
             ArrayList<Subject> subjects = addSubjects(jsonSubjects);
 
             timeTable.afternoon = Boolean.parseBoolean(jsonObject.getString("afternoon"));
-            timeTable.daysOn = Arrays.stream(((jsonObject.getString("daysOn")).split(",")))
-                    .mapToInt(Integer::parseInt)
-                    .toArray();
+            timeTable.daysOn = jsonObject.getString("daysOn");
             timeTable.subjects = subjects.toArray(new Subject[0]);
             timeTable.numDaysOn = Integer.parseInt(jsonObject.getString("numDaysOn"));
             timeTable.morning = Boolean.parseBoolean(jsonObject.getString("morning"));
