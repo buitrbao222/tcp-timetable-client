@@ -146,7 +146,7 @@ public class MainController implements Initializable {
                 return;
             }
 
-            options.put("numSubjects", subjectLimitString);
+            options.put("numSubject", subjectLimitString);
         }
 
         if (resultLimitCheckBox.isSelected()) {
@@ -223,7 +223,9 @@ public class MainController implements Initializable {
             options.put("daysOn", daysOn);
         }
 
-        Connection connection = new Connection("103.6.169.208", 6000);
+        String hostLocal = "localhost";
+        String host = "103.6.169.208";
+        Connection connection = new Connection(hostLocal, 6000);
 
         String response = connection.getTimetables(options);
 
