@@ -5,6 +5,7 @@ import DTO.Timetable;
 import Socket.Connection;
 import Utils.AlertUtils;
 import Utils.JsonToTimetable;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,6 +15,9 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.json.JSONObject;
 
@@ -28,7 +32,7 @@ public class MainController implements Initializable {
     private final static int SUBJECT_REQUIRED_LENGTH = 6;
 
     //    private final static String host = "103.6.169.208";
-    private final static String host = "localhost";
+    private final static String host = "103.6.169.208";//localhost
     private final static int port = 6000;
 
     private static ArrayList<Color> colors = new ArrayList<>(Arrays.asList(
@@ -59,6 +63,12 @@ public class MainController implements Initializable {
 
     @FXML
     public ListView<String> subjectsListView;
+
+    @FXML
+    public StackPane stackPane;
+
+    @FXML
+    public VBox vbox;
 
     @FXML
     public ToggleGroup daySessionToggleGroup;
@@ -255,62 +265,92 @@ public class MainController implements Initializable {
             options.put("daysOn", daysOn);
         }
 
-        Connection connection = new Connection(host, port);
 
-        String response = connection.getTimetables(options);
+        ProgressIndicator progressIndicator = new ProgressIndicator();
+        vbox.setDisable(true);
+        stackPane.getChildren().add(progressIndicator);
 
-        connection.close();
+        new Thread(() -> {
+            Connection connection = null;
+            try {
+                connection = new Connection(host, port);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String response = connection.getTimetables(options);
 
-        // Unexpected error
-        if (response.equals("error")) {
-            AlertUtils.alert("Đã có lỗi bất ngờ xảy ra.");
-            return;
-        }
-
-        JSONObject jsonData = new JSONObject(response);
-
-        // Has error from server
-        if (jsonData.keySet().contains("error")) {
-            String error = jsonData.getString("error");
-
-            String message = "";
-            if (error.startsWith("Invalid subject")) {
-                String subject = error.replaceAll("Invalid subject: ", "");
-                message = "Mã môn học không tồn tại: " + subject;
-            } else {
-                message = error;
+            try {
+                connection.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
-            AlertUtils.alert(message);
-            return;
-        }
+            Platform.runLater(() -> {
+                stackPane.getChildren().remove(progressIndicator);
+                vbox.setDisable(false);
+                // Unexpected error
+                if (response.equals("error")) {
+                    AlertUtils.alert("Đã có lỗi bất ngờ xảy ra.");
+                    return;
+                }
 
-        ArrayList<Timetable> timetables = JsonToTimetable.convert(response);
+                JSONObject jsonData = new JSONObject(response);
 
-        if (!timetables.isEmpty()) {
-            HashMap<String, Color> subjectColorMap = new HashMap<>();
+                // Has error from server
+                if (jsonData.keySet().contains("error")) {
+                    String error = jsonData.getString("error");
 
-            // Pick random colors
-            for (var subject : subjectList) {
-                int randomColorIndex = (int) (Math.random() * colors.size());
-                Color randomColor = colors.remove(randomColorIndex);
-                subjectColorMap.put(subject, randomColor);
-            }
+                    String message = "";
+                    if (error.startsWith("Invalid subject")) {
+                        String subject = error.replaceAll("Invalid subject: ", "");
+                        message = "Mã môn học không tồn tại: " + subject;
+                    } else {
+                        message = error;
+                    }
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/timetable.fxml"));
-            TimetableController controller = new TimetableController();
-            controller.timetables = timetables;
-            controller.subjectColorMap = subjectColorMap;
-            fxmlLoader.setController(controller);
-            Scene scene = new Scene(fxmlLoader.load());
-            Stage stage = new Stage();
-            stage.setTitle("Thời khóa biểu SGU");
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.show();
-        } else {
-            AlertUtils.alert("Không có thời khóa biểu phù hợp theo yêu cầu");
-        }
+                    AlertUtils.alert(message);
+                    return;
+                }
+
+                ArrayList<Timetable> timetables = null;
+                try {
+                    timetables = JsonToTimetable.convert(response);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                if (!timetables.isEmpty()) {
+                    HashMap<String, Color> subjectColorMap = new HashMap<>();
+
+                    // Pick random colors
+                    for (var subject : subjectList) {
+                        int randomColorIndex = (int) (Math.random() * colors.size());
+                        Color randomColor = colors.remove(randomColorIndex);
+                        subjectColorMap.put(subject, randomColor);
+                    }
+
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/timetable.fxml"));
+                    TimetableController controller = new TimetableController();
+                    controller.timetables = timetables;
+                    controller.subjectColorMap = subjectColorMap;
+                    fxmlLoader.setController(controller);
+                    Scene scene = null;
+                    try {
+                        scene = new Scene(fxmlLoader.load());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Stage stage = new Stage();
+                    stage.setTitle("Thời khóa biểu SGU");
+                    stage.setScene(scene);
+                    stage.setResizable(false);
+                    stage.show();
+                } else {
+                    AlertUtils.alert("Không có thời khóa biểu phù hợp theo yêu cầu");
+                }
+            });
+
+        }).start();
     }
 
     public void initAddTextField() {
