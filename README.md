@@ -1,2 +1,2 @@
 # TimeTable
-Server: https://github.com/randy102/timetable.git
+Server: https://github.com/tathienphuoc/javasocket
